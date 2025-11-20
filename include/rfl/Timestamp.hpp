@@ -92,6 +92,8 @@ class Timestamp {
     auto tm = tm_;
 #if defined(_MSC_VER) || defined(__MINGW32__)
     return _mkgmtime(&tm);
+#elif defined(__ZEPHYR__)
+		return static_cast<time_t>(timegm(&tm));
 #else
     return static_cast<time_t>(timegm(&tm) - tm_.tm_gmtoff);
 #endif
