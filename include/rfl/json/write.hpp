@@ -33,8 +33,12 @@ std::string write(const auto& _obj, const yyjson_write_flag _flag = 0) {
   const char* json_c_str =
       yyjson_mut_write_opts(w.doc(), _flag, NULL, NULL, &err);
   if (!json_c_str) {
+    #if defined(__ZEPHYR__)
+    std::abort();
+    #else
     throw std::runtime_error("An error occured while writing to JSON: " +
                              std::string(err.msg));
+    #endif
   }
   const auto json_str = std::string(json_c_str);
   free((void*)json_c_str);
@@ -53,8 +57,12 @@ std::ostream& write(const auto& _obj, std::ostream& _stream,
   const char* json_c_str =
       yyjson_mut_write_opts(w.doc(), _flag, NULL, NULL, &err);
   if (!json_c_str) {
+    #if defined(__ZEPHYR__)
+    std::abort();
+    #else
     throw std::runtime_error("An error occured while writing to JSON: " +
                              std::string(err.msg));
+    #endif
   }
   _stream << json_c_str;
   free((void*)json_c_str);

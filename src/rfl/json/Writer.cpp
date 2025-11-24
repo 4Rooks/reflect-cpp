@@ -55,7 +55,11 @@ Writer::OutputArrayType Writer::add_array_to_array(
   const auto arr = yyjson_mut_arr(doc());
   const bool ok = yyjson_mut_arr_add_val(_parent->val_, arr);
   if (!ok) {
+    #if defined(__ZEPHYR__)
+    std::abort();
+    #else
     throw std::runtime_error("Adding an array to an array failed.");
+	#endif
   }
   return OutputArrayType(arr);
 }
@@ -67,8 +71,12 @@ Writer::OutputArrayType Writer::add_array_to_object(
   const bool ok = yyjson_mut_obj_add(
       _parent->val_, yyjson_mut_strcpy(doc(), _name.data()), arr);
   if (!ok) {
+    #if defined(__ZEPHYR__)
+    std::abort();
+    #else
     throw std::runtime_error("Could not add field '" + std::string(_name) +
                              "' to object.");
+    #endif
   }
   return OutputArrayType(arr);
 }
@@ -78,7 +86,11 @@ Writer::OutputObjectType Writer::add_object_to_array(
   const auto obj = yyjson_mut_obj(doc());
   const bool ok = yyjson_mut_arr_add_val(_parent->val_, obj);
   if (!ok) {
+    #if defined(__ZEPHYR__)
+    std::abort();
+    #else
     throw std::runtime_error("Adding an object to an array failed.");
+    #endif
   }
   return OutputObjectType(obj);
 }
@@ -90,8 +102,12 @@ Writer::OutputObjectType Writer::add_object_to_object(
   const auto ok = yyjson_mut_obj_add(
       _parent->val_, yyjson_mut_strcpy(doc(), _name.data()), obj);
   if (!ok) {
+    #if defined(__ZEPHYR__)
+    std::abort();
+    #else
     throw std::runtime_error("Could not add field '" + std::string(_name) +
                              "' to object.");
+    #endif
   }
   return OutputObjectType(obj);
 }
@@ -101,7 +117,11 @@ Writer::OutputVarType Writer::add_null_to_array(
   const auto null = yyjson_mut_null(doc());
   const bool ok = yyjson_mut_arr_add_val(_parent->val_, null);
   if (!ok) {
+    #if defined(__ZEPHYR__)
+    std::abort();
+    #else
     throw std::runtime_error("Adding null to an array failed.");
+    #endif
   }
   return OutputVarType(null);
 }
@@ -112,8 +132,12 @@ Writer::OutputVarType Writer::add_null_to_object(
   const bool ok = yyjson_mut_obj_add(
       _parent->val_, yyjson_mut_strcpy(doc(), _name.data()), null);
   if (!ok) {
+    #if defined(__ZEPHYR__)
+    std::abort();
+    #else
     throw std::runtime_error("Could not add field '" + std::string(_name) +
                              "' to object.");
+    #endif
   }
   return OutputVarType(null);
 }

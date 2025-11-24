@@ -85,7 +85,11 @@ class RFL_API Writer {
     const auto val = from_basic_type(_var);
     const bool ok = yyjson_mut_arr_add_val(_parent->val_, val.val_);
     if (!ok) {
+      #if defined(__ZEPHYR__)
+      std::abort();
+	  #else
       throw std::runtime_error("Could not add value to array.");
+      #endif
     }
     return OutputVarType(val);
   }
@@ -98,8 +102,12 @@ class RFL_API Writer {
     const bool ok = yyjson_mut_obj_add(
         _parent->val_, yyjson_mut_strcpy(doc(), _name.data()), val.val_);
     if (!ok) {
+	  #if defined(__ZEPHYR__)
+      std::abort();
+      #else
       throw std::runtime_error("Could not add field '" + std::string(_name) +
                                "' to object.");
+	  #endif
     }
     return OutputVarType(val);
   }

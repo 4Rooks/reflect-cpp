@@ -261,7 +261,11 @@ class Result {
     if (success_) {
       return std::move(*this).get_t();
     } else {
+      #if defined(__ZEPHYR__)
+      std::abort();
+      #else
       throw std::runtime_error(get_err().what());
+      #endif
     }
   }
 
@@ -271,7 +275,11 @@ class Result {
     if (success_) {
       return get_t();
     } else {
+      #if defined(__ZEPHYR__)
+      std::abort();
+      #else
       throw std::runtime_error(get_err().what());
+      #endif
     }
   }
 
@@ -332,7 +340,13 @@ class Result {
   }
 
   Error& error() & {
-    if (success_) throw std::runtime_error("Expected does not contain value");
+    if (success_) {
+      #if defined(__ZEPHYR__)
+      std::abort();
+      #else
+      throw std::runtime_error("Expected does not contain value");
+      #endif
+    }
     return get_err();
   }
 
