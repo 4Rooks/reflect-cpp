@@ -17,6 +17,8 @@
 #include "../always_false.hpp"
 #include "../common.hpp"
 
+#include <iostream>
+
 namespace rfl {
 namespace json {
 
@@ -86,6 +88,7 @@ class RFL_API Writer {
     const bool ok = yyjson_mut_arr_add_val(_parent->val_, val.val_);
     if (!ok) {
       #if defined(__ZEPHYR__)
+      std::cout << "Could not add value to array." << std::endl;
       std::abort();
 	  #else
       throw std::runtime_error("Could not add value to array.");
@@ -103,6 +106,8 @@ class RFL_API Writer {
         _parent->val_, yyjson_mut_strcpy(doc(), _name.data()), val.val_);
     if (!ok) {
 	  #if defined(__ZEPHYR__)
+    std::cout << "Could not add field '" << std::string(_name) << 
+                               "' to object." << std::endl;
       std::abort();
       #else
       throw std::runtime_error("Could not add field '" + std::string(_name) +

@@ -12,6 +12,8 @@
 #include <string>
 #include <type_traits>
 
+#include <iostream>
+
 namespace rfl {
 
 /// Defines the error class to be returned when something went wrong
@@ -262,6 +264,7 @@ class Result {
       return std::move(*this).get_t();
     } else {
       #if defined(__ZEPHYR__)
+      std::cout << get_err().what() << std::endl;
       std::abort();
       #else
       throw std::runtime_error(get_err().what());
@@ -276,6 +279,7 @@ class Result {
       return get_t();
     } else {
       #if defined(__ZEPHYR__)
+      std::cout << get_err().what() << std::endl;
       std::abort();
       #else
       throw std::runtime_error(get_err().what());
@@ -342,6 +346,7 @@ class Result {
   Error& error() & {
     if (success_) {
       #if defined(__ZEPHYR__)
+      std::cout << "Expected does not contain value" << std::endl;
       std::abort();
       #else
       throw std::runtime_error("Expected does not contain value");

@@ -56,6 +56,7 @@ Writer::OutputArrayType Writer::add_array_to_array(
   const bool ok = yyjson_mut_arr_add_val(_parent->val_, arr);
   if (!ok) {
     #if defined(__ZEPHYR__)
+    std::cout << "Adding an array to an array failed." << std::endl;
     std::abort();
     #else
     throw std::runtime_error("Adding an array to an array failed.");
@@ -72,6 +73,7 @@ Writer::OutputArrayType Writer::add_array_to_object(
       _parent->val_, yyjson_mut_strcpy(doc(), _name.data()), arr);
   if (!ok) {
     #if defined(__ZEPHYR__)
+    std::cout << "Could not add field '" << std::string(_name) << "' to object." << std::endl;
     std::abort();
     #else
     throw std::runtime_error("Could not add field '" + std::string(_name) +
@@ -87,6 +89,7 @@ Writer::OutputObjectType Writer::add_object_to_array(
   const bool ok = yyjson_mut_arr_add_val(_parent->val_, obj);
   if (!ok) {
     #if defined(__ZEPHYR__)
+    std::cout << "Adding an object to an array failed." << std::endl;
     std::abort();
     #else
     throw std::runtime_error("Adding an object to an array failed.");
@@ -103,6 +106,7 @@ Writer::OutputObjectType Writer::add_object_to_object(
       _parent->val_, yyjson_mut_strcpy(doc(), _name.data()), obj);
   if (!ok) {
     #if defined(__ZEPHYR__)
+    std::cout << "Could not add field '" << std::string(_name) << "' to object." << std::endl;
     std::abort();
     #else
     throw std::runtime_error("Could not add field '" + std::string(_name) +
@@ -118,6 +122,7 @@ Writer::OutputVarType Writer::add_null_to_array(
   const bool ok = yyjson_mut_arr_add_val(_parent->val_, null);
   if (!ok) {
     #if defined(__ZEPHYR__)
+    std::cout << "Adding null to an array failed." << std::endl;
     std::abort();
     #else
     throw std::runtime_error("Adding null to an array failed.");
@@ -133,6 +138,8 @@ Writer::OutputVarType Writer::add_null_to_object(
       _parent->val_, yyjson_mut_strcpy(doc(), _name.data()), null);
   if (!ok) {
     #if defined(__ZEPHYR__)
+    std::cout << "Could not add field '" << std::string(_name) <<
+                             "' to object." << std::endl;
     std::abort();
     #else
     throw std::runtime_error("Could not add field '" + std::string(_name) +

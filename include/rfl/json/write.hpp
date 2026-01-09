@@ -16,6 +16,8 @@
 #include "../parsing/Parent.hpp"
 #include "Parser.hpp"
 
+#include <iostream>
+
 namespace rfl {
 namespace json {
 
@@ -34,6 +36,7 @@ std::string write(const auto& _obj, const yyjson_write_flag _flag = 0) {
       yyjson_mut_write_opts(w.doc(), _flag, NULL, NULL, &err);
   if (!json_c_str) {
     #if defined(__ZEPHYR__)
+    std::cout << "An error occured while writing to JSON: " << std::string(err.msg) << std::endl;
     std::abort();
     #else
     throw std::runtime_error("An error occured while writing to JSON: " +
@@ -58,6 +61,7 @@ std::ostream& write(const auto& _obj, std::ostream& _stream,
       yyjson_mut_write_opts(w.doc(), _flag, NULL, NULL, &err);
   if (!json_c_str) {
     #if defined(__ZEPHYR__)
+    std::cout << "An error occured while writing to JSON: " << std::string(err.msg) << std::endl;
     std::abort();
     #else
     throw std::runtime_error("An error occured while writing to JSON: " +
